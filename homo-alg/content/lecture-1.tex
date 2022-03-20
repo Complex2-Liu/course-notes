@@ -1,0 +1,227 @@
+\section{Lecture 1, 2022-02-23}
+\label{sec:lecture1}
+
+设 $G$ 是一个群, $H$ 是 $G$ 的正规子群,
+我们探讨由 $H$ 和 $G/H$ 拼出 $G$ 的问题.
+
+\begin{defin}
+设 $1 \xrightarrow{} M \xrightarrow{i} Q \xrightarrow{p} G \xrightarrow{} 1$
+是一个短正合列, 我们称 $Q$ 是 $G$ 枕着 $M$ 的一个扩充.
+\end{defin}
+
+我们更多的关注是商群 $G$, 子群 $M$ 反倒只是起辅助作用.
+以下我们总假设 $M$ 是 Abel 群, 运算为加法.
+
+\begin{exmp}
+设 $G$ 是有限可解群. 则 $G$ 有子群列
+\[
+1 = G_0 \unlhd G_1 \unlhd \cdots \unlhd G_{n-1} \unlhd G_n = G,
+\]
+其中 $G_i$ 是 $G$ 的正规子群, $G_{i+1}/G_i$ 是交换群.
+于是 $G$ 实际上可以通过有限多次扩充得到:
+\[
+\begin{tikzcd}
+	1 & {G_{n-1}/G_{n-2}} & {G_n/G_{n-2}} & {G_n/G_{n-1}} & 1 \\
+	1 & {G_{n-2}/G_{n-3}} & {G_n/G_{n-3}} & {G_n/G_{n-2}} & 1 \\
+	\\
+	1 & {G_1/G_0} & {G_n/G_0} & {G_n/G_1} & 1
+	\arrow[from=1-1, to=1-2]
+	\arrow[from=1-2, to=1-3]
+	\arrow[from=1-3, to=1-4]
+	\arrow[from=1-4, to=1-5]
+	\arrow[from=2-1, to=2-2]
+	\arrow[from=2-2, to=2-3]
+	\arrow[from=2-3, to=2-4]
+	\arrow[from=2-4, to=2-5]
+	\arrow[from=4-1, to=4-2]
+	\arrow[from=4-2, to=4-3]
+	\arrow[from=4-3, to=4-4]
+	\arrow[from=4-4, to=4-5]
+	\arrow[dashed, from=1-3, to=2-4]
+\end{tikzcd}
+\]
+\end{exmp}
+
+\begin{rem*}
+To do list: 可解群有若干个等价的定义.
+\end{rem*}
+
+\begin{lem}
+短正合列给出了 $M$ 的一个 $G$-module 结构, 称为 $Q$ 的派生模.
+\end{lem}
+
+\begin{proof}
+对任意 $\sigma \in G$, 任取 $w_\sigma \in Q$ 使得 $p(w_\sigma) = \sigma$,
+我们有 $p^{-1}(\sigma) = w_\sigma M = Mw_\sigma$.
+这诱导了 $M$ 上的一个共轭作用:
+\begin{equation}
+M \to M, \quad x \mapsto {}^\sigma x := w_\sigma x w_\sigma^{-1}.
+\end{equation}
+容易验证这个作用与 $w_\sigma$ 的选取无关, 只与 $\sigma$ 有关
+(因为 $M$ 是 Abel 群).
+\end{proof}
+
+\begin{defin}[等价的扩充]
+我们称两个扩充 $Q_1, Q_2$ 等价, 如果存在 $f: Q_1 \to Q_2$ 使得
+\[
+\begin{tikzcd}
+	1 & M & {Q_1} & G & 1 \\
+	1 & M & {Q_2} & G & 1
+	\arrow[from=1-1, to=1-2]
+	\arrow[from=1-2, to=1-3]
+	\arrow[from=1-3, to=1-4]
+	\arrow[from=1-4, to=1-5]
+	\arrow[from=2-1, to=2-2]
+	\arrow[from=2-2, to=2-3]
+	\arrow[from=2-3, to=2-4]
+	\arrow[from=2-4, to=2-5]
+	\arrow["{\mathrm{id}}"', from=1-1, to=2-1]
+	\arrow["{\mathrm{id}}"', from=1-2, to=2-2]
+	\arrow["f"', from=1-3, to=2-3]
+	\arrow["{\mathrm{id}}"', from=1-4, to=2-4]
+	\arrow["{\mathrm{id}}"', from=1-5, to=2-5]
+\end{tikzcd}
+\]
+交换. 由 Five Lemma 知, 这样的 $f$ 一定是同构.
+\end{defin}
+
+\begin{defin}[因子团]
+设 $M$ 是一个 $G$-module.
+设 $\xi: G \times G \to M$ 满足上圈条件
+\begin{equation}
+\label{eq:cocycle}
+{}^\sigma\xi(\tau,\rho) - \xi(\sigma\tau,\rho) + \xi(\sigma,\tau\rho) - \xi(\sigma,\tau) = 0,
+\end{equation}
+则我们称 $\xi$ 是一个因子团. 进一步若存在 $\varphi: G \to M$ 使得
+\begin{equation}
+\xi(\sigma,\tau) = {}^\sigma\varphi(\tau) - \varphi(\sigma\tau) + \varphi(\sigma),
+\end{equation}
+则我们称 $\xi$ 为主因子团.
+所有的因子团构关于加法构成一个 Abel 群, 所有的主因子团构成这个 Abel 群的一个子群,
+它们的商群记为 $H^2(G, M)$.
+\end{defin}
+
+\begin{prop}
+\label{prop:Q-determine-cohomology}
+一个扩充 $Q$ 确定出 $H^2(G, M)$ 中的一个元素.
+\end{prop}
+
+\begin{proof}
+$Q$ 有坐标表示:
+\begin{equation}
+M \times G \to Q, \qquad (x, \sigma) \mapsto xw_\sigma, \qquad
+(\alpha w_{p(\alpha)}^{-1}, p(\alpha)) \mapsfrom \alpha.
+\end{equation}
+在坐标表示下, $Q$ 的乘法运算为
+\begin{equation}
+(xw_\sigma)(yw_\tau) = xw_\sigma y w_\sigma^{-1}w_\sigma w_\tau
+                     = (x + {}^\sigma y)w_\sigma w_\tau.
+\end{equation}
+注意到 $w_\sigma w_\tau$ 和 $w_{\sigma\tau}$ 在 $p$ 作用后都对应 $\sigma\tau$,
+故他们实际落在同一个陪集中,
+设 $\xi(\sigma,\tau) = w_\sigma w_\tau w_{\sigma\tau}^{-1} \in M$,
+则我们最终得到的乘法为
+\begin{equation}
+(xw_\sigma)(y\tau) = (x + {}^\sigma y + \xi(\sigma,\tau))w_{\sigma\tau}.
+\end{equation}
+$\xi$ 满足上圈条件由结合律 $(w_\sigma w_\tau)w_\rho = w_\sigma(w_\tau w_\rho)$ 给出.
+另一方面, 设 $\sigma \mapsto w_\sigma' = \varphi(\sigma)w_\sigma$ 是另一个提升,
+其中 $\varphi(\sigma) \in M$, 我们有
+\begin{align*}
+\xi'(\sigma,\tau) &= w_\sigma'w_\tau'w_{\sigma\tau}'^{-1}\\
+                  &= (\varphi(\sigma)w_\sigma)(\varphi(\tau)w_\tau)(\varphi(\sigma\tau)w_{\sigma\tau})^{-1}\\
+                  &= (\varphi(\sigma) + {}^\sigma\varphi(\tau))w_\sigma w_\tau w_{\sigma\tau}^{-1}\varphi(\sigma\tau)^{-1}\\
+                  &= \varphi(\sigma) + {}^\sigma\varphi(\tau) + \xi(\sigma,\tau) - \varphi(\sigma\tau).
+\end{align*}
+这意味着不同的提升得到的因子团只相差一个主因子团.
+\end{proof}
+
+\begin{lem}[因子团的正规化]
+\begin{enumerate}[label={\normalfont(\arabic*)}]
+\item $\xi(1,\tau) = \xi(1,1) =: t$ for all $\tau$.
+\item $\xi(\sigma, 1) = {}^\sigma\xi(1,1) = {}^\sigma t$.
+\item ${}^\sigma t$ 是一个主因子团.
+\item 设 $\xi'(\sigma, \tau) = \xi(\sigma, \tau) - {}^\sigma t$,
+则 $\xi'(\sigma, 1) = \xi'(1, \tau) = 0$, 称为正规化的因子团.
+\end{enumerate}
+\end{lem}
+
+\begin{proof}
+(1) 在上圈条件 \cref{eq:cocycle} 中取 $\sigma = 1$.
+
+(2) 取 $\tau = \rho = 1$.
+
+(3) 设 $\varphi(\sigma) = t \in M$ for all $\sigma \in G$,
+则 $\varphi$ 定义的主因子团就是 ${}^\sigma t$.
+
+(4) 显然.
+\end{proof}
+
+\begin{rem*}
+从提升的角度来说, 正规化的因子团就是使得 $w_1 = 0 \in M$.
+\end{rem*}
+
+\begin{thm}
+设 $M$ 是一个 $G$-module.
+$H^2(G, M)$ 中的元素与 $G$ 枕着 $M$ 的扩充的等价类一一对应.
+\end{thm}
+
+\begin{proof}
+\cref{prop:Q-determine-cohomology} 给出了 $Q$ 到 $H^2(G, M)$ 的映射,
+下面我们从 $H^2(G, M)$ 的一个元素 $\xi: G \times G \to M$ 出发, 来定义扩充 $Q_\xi$.
+
+\bigskip
+
+显然 underlying set 就是 $M \times G$, 映射 $i, p$ 分别为
+$x \mapsto (x, 1), (x, \sigma) \mapsto \sigma$.
+提升 $G \to M \times G$ 为 $\sigma \mapsto w_\sigma = (0,\sigma)$.
+乘法为
+\begin{equation}
+(x,\sigma)(y,\tau) = (x + {}^\sigma y + \xi(\sigma,\tau), \sigma\tau).
+\end{equation}
+剩下的就是一些验证的工作了.
+\end{proof}
+
+\begin{exmp}[半直积]
+注意到 $\xi(\sigma,\tau) \equiv 0$ 是一个因子团,
+这个因子团是 $H^2(G, M)$ 中的单位元 ($0$ 元素).
+他对应的扩充 $Q_0$ 就是我们熟知的半直积 $M \rtimes G$.
+注意在这个时候, $G$ 不单只是 $Q_0$ 的商群, 它还是 $Q_0$ 的一个子群,
+这是因为我们可以通过 $\sigma \mapsto (0,\sigma)$ 将 $G$ 嵌入 $Q_0$.
+现在设 $G \to M \rtimes G, \sigma \mapsto (\eta(\sigma), \sigma)$
+是另一个提升, 如果我们要求它的像 $G_\eta$ 是 $M \rtimes G$ 的一个子群
+(which is isomorphic to $G$), $\eta$ 应该满足怎样的条件?
+由 $(\eta(\sigma),\sigma)(\eta(\tau),\tau) = (\eta(\sigma\tau),\sigma\tau)$ 得
+\[
+  \eta(\sigma\tau) = \eta(\sigma) + {}^\sigma\eta(\tau).
+\]
+\end{exmp}
+
+\begin{defin}[交叉同态]
+设 $\eta: G \to M$ 满足
+\begin{equation}
+{}^\sigma\eta(\tau) - \eta(\sigma\tau) + \eta(\sigma) = 0,
+\end{equation}
+则称 $\eta$ 是一个交叉同态.
+若能找到一个 $u \in M$, 使得 $\eta(\sigma) = {}^\sigma u - u$,
+则称 $\eta$ 是一个主交叉同态.
+所有的交叉同态关于加法构成一个 Abel 群,
+所有的主交叉同态构成这个 Abel 群的一个子群,
+它们的商群记为 $H^1(G, M)$.
+\end{defin}
+
+\begin{rem*}
+当 $G$ 在 $M$ 上平凡作用时, 交叉同态就是普通的同态.
+\end{rem*}
+
+\begin{lem}
+若 $\eta, \eta'$ 相差一个主交叉同态,
+则对应的 $G_\eta, G_{\eta'}$ 可以通过 $M$ 来互相共轭.
+\end{lem}
+
+\begin{proof}
+设 $\eta(\sigma) - \eta'(\sigma) = {}^\sigma u - u$, 则
+\[
+(\eta'(\sigma),\sigma) = (\eta(\sigma) + {}^\sigma u - u, \sigma) = (-u, 1)(\eta(\sigma), \sigma)(u, 1).
+\]
+\end{proof}
